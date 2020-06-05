@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 isset($app) || exit('请至平台中运行：php app/[admin|iot|paas|payment|store]/bin/install.php'.PHP_EOL);
 
 use Hook\Db\{PdoConnect};

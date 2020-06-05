@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 class Hook_Hook_ModuleController extends Base\ApiController
 {
     public function getAction()

@@ -1,12 +1,3 @@
-/**
-
- @Name：layuiAdmin iframe版全局配置
- @Author：贤心
- @Site：http://www.layui.com/admin/
- @License：LPPL（layui付费产品协议）
-    
- */
- 
 layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
   exports('setter', {
     container: 'LAY_app' //容器ID
@@ -16,8 +7,8 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,engine: '.html' //视图文件后缀名
     ,pageTabs: true //是否开启页面选项卡功能。iframe版推荐开启
     
-    ,name: 'layuiAdmin'
-    ,tableName: 'layuiAdmin' //本地存储表名
+    ,name: 'HookPHP'
+    ,tableName: 'HookPHP' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     
     ,debug: true //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
@@ -29,10 +20,10 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     
     //自定义响应字段
     ,response: {
-      statusName: 'code' //数据状态的字段名称
+      statusName: 'status' //数据状态的字段名称
       ,statusCode: {
-        ok: 0 //数据状态一切正常的状态码
-        ,logout: 1001 //登录状态失效的状态码
+        ok: 200 //数据状态一切正常的状态码
+        ,logout: 200 //登录状态失效的状态码
       }
       ,msgName: 'msg' //状态信息的字段名称
       ,dataName: 'data' //数据详情的字段名称

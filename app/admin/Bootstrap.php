@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 use Yaf\{Dispatcher, Bootstrap_Abstract};
 
 class Bootstrap extends Bootstrap_Abstract

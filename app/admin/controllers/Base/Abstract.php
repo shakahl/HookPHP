@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Base;
 use Hook\Http\Header;
 
@@ -19,7 +21,7 @@ abstract class AbstractController extends \Yaf\Controller_Abstract
         //登录检测
         if (!isset($_SESSION[APP_NAME])) {
             if ($this->_request->module === 'Api') {
-                return $this->send([], 100000, l('Login.fail'), 401);
+                //return $this->send([], 100000, l('Login.fail'), 401);
             }
             if ($this->_request->controller !== 'Login') {
                 $this->forward('Login', 'get', ['referer' => $this->_request->getServer('REQUEST_URI', APP_CONFIG['http']['uri'])]);
@@ -44,16 +46,6 @@ abstract class AbstractController extends \Yaf\Controller_Abstract
     {
         Header::setCharset();
         Header::setStatus($status);
-        if (is_array($data)) {
-            foreach ($data as &$v) {
-                if (isset($v['date_add'])) {
-                    $v['date_add'] = date('Y-m-d H:i:s', $v['date_add']);
-                }
-                if (isset($v['date_upd'])) {
-                    $v['date_upd'] = date('Y-m-d H:i:s', $v['date_upd']);
-                }
-            }
-        }
-        exit(json_encode(['id' => mt_rand(), 'code' => $code, 'msg' => $msg, 'data' => $data], JSON_UNESCAPED_UNICODE));
+        exit(json_encode(['id' => mt_rand(), 'code' => $code, 'msg' => $msg, 'status' => $status, 'data' => $data], JSON_UNESCAPED_UNICODE));
     }
 }

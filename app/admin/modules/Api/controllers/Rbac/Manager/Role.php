@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 class Rbac_Manager_RoleController extends Base\ApiController
 {
     public function getAction()

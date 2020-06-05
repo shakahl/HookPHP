@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Hook\Db;
 
+use PDO;
 use Yaconf;
 use Hook\Cache\Cache;
 
@@ -109,12 +112,12 @@ class OrmConnect extends Cache
         return $this;
     }
 
-    public function fetchAll(int $type = null, int $ttl = 3600): array
+    public function fetchAll(int $type = PDO::FETCH_ASSOC, int $ttl = 3600): array
     {
         return $this->getSingleData(__FUNCTION__, $type, $ttl);
     }
 
-    public function fetch(int $type = null, int $ttl = 3600)
+    public function fetch(int $type = PDO::FETCH_ASSOC, int $ttl = 3600)
     {
         return $this->getSingleData(__FUNCTION__, $type, $ttl);
     }
@@ -206,7 +209,7 @@ class OrmConnect extends Cache
         return $statement;
     }
 
-    private function getSingleData(string $callable, int $type = null, int $ttl)
+    private function getSingleData(string $callable, int $type, int $ttl)
     {
         $parameter = $this->parameter;
         $statement = $this->checkStatement($this->statement);

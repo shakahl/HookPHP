@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Hook\Cache;
 
 use Hook\Db\{PdoConnect, RedisConnect, YacConnect};
@@ -16,7 +18,7 @@ class Cache
         $this->yac = YacConnect::getInstance();
     }
 
-    public static function getInstance(string $name = '', string $key = 'default'): self
+    public static function getInstance($name = '', string $key = 'default'): self
     {
         $class = static::class;
         $instance = &self::static($class);
