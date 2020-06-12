@@ -6,7 +6,7 @@ use Hook\Http\Header;
 
 abstract class AbstractController extends \Yaf\Controller_Abstract
 {
-    protected function init()
+    public function init()
     {
         
     }

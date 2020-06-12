@@ -10,6 +10,7 @@ function init(string $appName = APP_NAME)
     global $app;
     $pdo = PdoConnect::getInstance();
 
+    $pdo->handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
     $pdo->handle->beginTransaction();
     foreach (Yaconf::get('dicPdo.INSTALL.'.($appName === 'admin' ? 'ADMIN' : 'APP').'.STRUCT') as $sql) {
         $sql = str_replace('%d', APP_CONFIG['mysql']['default']['dbname'], $sql);
@@ -24,7 +25,7 @@ function init(string $appName = APP_NAME)
     foreach ($pdo->fetchAll(Yaconf::get('dicPdo.TABLE.GET_ALL'), [APP_CONFIG['application']['prefix'].$appName.'_%'], PDO::FETCH_NUM) as list($table)) {
         $data .= '['.$table.']'.PHP_EOL;
         foreach ($pdo->fetchAll('DESC `'.$table.'`') as $field) {
-            $data .= $field['Field'].'.type='.substr($field['Type'], 0, strpos($field['Type'], '(')).PHP_EOL;
+            $data .= $field['Field'].'.type='.strstr($field['Type'].'(', '(', true).PHP_EOL;
             $data .= $field['Field'].'.null='.$field['Null'].PHP_EOL;
             $data .= $field['Field'].'.key='.$field['Key'].PHP_EOL;
             $data .= $field['Field'].'.default='.$field['Default'].PHP_EOL;

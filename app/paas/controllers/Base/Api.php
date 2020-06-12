@@ -6,7 +6,7 @@ use Yaf\Dispatcher;
 
 abstract class ApiController extends AbstractController
 {
-    protected function init()
+    public function init()
     {
         parent::init();
         Dispatcher::getInstance()->autoRender(false);

@@ -8,7 +8,7 @@ abstract class ViewController extends AbstractController
     protected array $form = [];
     protected array $ignore = [];
 
-    protected function init()
+    public function init()
     {
         parent::init();
         $this->_view->setScriptPath(APP_CONFIG['application']['directory'].($this->_request->module === 'Index' ? '' : '/modules/'.$this->_request->module).'/views/default');

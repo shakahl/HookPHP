@@ -6,11 +6,12 @@ use Yaf\Dispatcher;
 
 abstract class ApiController extends AbstractController
 {
-    protected function init()
+    public function init()
     {
         parent::init();
         Dispatcher::getInstance()->autoRender(false);
         $this->_request->setParam('version', $this->_request->action)->setActionName($this->_request->method);
+        $this->model = (str_replace('_', '\\', $this->_request->controller).'Model')::getInstance($this->id);
     }
 
     protected function postAction()
