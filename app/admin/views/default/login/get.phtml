@@ -58,17 +58,12 @@
                 ,method: 'POST'
                 ,data: obj.field
                 ,done: function(res){
-                    if (res.code === 10000) {
-                        layer.msg('登入成功', {
-                            offset: '15px'
-                            ,icon: 1
-                            ,time: 1000
-                        }, function(){
-                            location.href = res.data.referer;
-                        });
-                    } else {
-                        layer.msg(res.msg, {icon: 5});
-                    }
+                    layer.msg(res.msg, {icon: 1, offset: '15px', time: 1000}, function(){
+                        location.href = res.data.referer;
+                    });
+                }
+                ,error: function(res){
+                    layer.msg(res.msg, {icon: 5});
                 }
             });
         });

@@ -67,7 +67,7 @@ abstract class AbstractModel extends Cache
             return $this->pdo->handle->commit() && $this->afterPost() ? $result['lastInsertId']: 0;
         } catch (\Throwable $e) {
             $this->pdo->handle->rollBack();
-            AbstractController::send([], 100003, $e->getMessage(), 500);
+            AbstractController::send([], 'throwableCatch', 500);
         }
     }
 
@@ -82,7 +82,7 @@ abstract class AbstractModel extends Cache
             return $this->pdo->handle->commit() && $this->afterDelete();
         } catch (\Throwable $e) {
             $this->pdo->handle->rollBack();
-            AbstractController::send([], 100005, $e->getMessage(), 500);
+            AbstractController::send([], 'throwableCatch', 500);
         }
     }
 
@@ -105,7 +105,7 @@ abstract class AbstractModel extends Cache
             return $this->pdo->handle->commit() && $this->afterPut();
         } catch (\Throwable $e) {
             $this->pdo->handle->rollBack();
-            AbstractController::send([], 100004, $e->getMessage(), 500);
+            AbstractController::send([], 'throwableCatch', 500);
         }
     }
 

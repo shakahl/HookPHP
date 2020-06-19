@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Hook\Http\Header, Hook\Crypt\PassWord;
+use Hook\Crypt\PassWord;
 
 class LoginController extends Base\ApiController
 {
@@ -27,6 +27,6 @@ class LoginController extends Base\ApiController
 
             self::send(['referer' => $referer]);
         }
-        self::send([], 0, '账号或者密码错误');
+        self::send([], 'invalidAuth');
     }
 }

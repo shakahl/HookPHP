@@ -11,7 +11,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,tableName: 'HookPHP' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     
-    ,debug: true //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
+    ,debug: false //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
 
     //自定义请求字段
     ,request: {
@@ -20,10 +20,10 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     
     //自定义响应字段
     ,response: {
-      statusName: 'status' //数据状态的字段名称
+      statusName: 'code' //数据状态的字段名称
       ,statusCode: {
-        ok: 200 //数据状态一切正常的状态码
-        ,logout: 200 //登录状态失效的状态码
+        ok: 'ok' //数据状态一切正常的状态码
+        ,logout: 'logonExpired' //登录状态失效的状态码
       }
       ,msgName: 'msg' //状态信息的字段名称
       ,dataName: 'data' //数据详情的字段名称
