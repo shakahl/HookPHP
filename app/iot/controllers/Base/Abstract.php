@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 namespace Base;
+
+use SeasLog;
 use Hook\Http\Header;
 
 abstract class AbstractController extends \Yaf\Controller_Abstract
@@ -11,10 +13,10 @@ abstract class AbstractController extends \Yaf\Controller_Abstract
         
     }
 
-    public static function send(array $data = [], string $code = 'ok', int $status = 200)
+    public static function send(array $data = [], int $count = 0, string $code = 'ok', int $status = 200)
     {
         Header::setCharset();
         Header::setStatus($status);
-        exit(json_encode(['id' => mt_rand(), 'code' => $code, 'msg' => l('error.'.$code), 'data' => $data], JSON_UNESCAPED_UNICODE));
+        exit(json_encode(['id' => SeasLog::getRequestID(), 'code' => $code, 'msg' => l('error.'.$code), 'data' => $data, 'count' => $count], JSON_UNESCAPED_UNICODE));
     }
 }

@@ -111,6 +111,14 @@
                 ,{field:'name', sort: true, edit: 'text', title: '名字'}
                 ,{fixed:'right', toolbar: '#operate', unresize: true}
             ]]
+            ,parseData: function(res){
+                return {
+                    "code": res.code === 'ok' ? 0 : res.code,
+                    "msg": res.code === 'ok' ? '' : res.msg,
+                    "count": res.count,
+                    "data": res.data
+                };
+            }
             ,page: true
         });
 

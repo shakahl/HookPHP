@@ -27,6 +27,6 @@ class LoginController extends Base\ApiController
 
             self::send(['referer' => $referer]);
         }
-        self::send([], 'invalidAuth');
+        self::send([], 0, 'invalidAuth');
     }
 }

@@ -9,6 +9,6 @@ class MenuController extends Base\ApiController
         foreach ($data as &$v) {
             $v['parent'] = \MenuModel::getInstance((int) $v['parent'])->getData(APP_LANG_ID)['name'] ?? '';
         }
-        return $this->send($data);
+        return $this->send($data, count($data));
     }
 }
