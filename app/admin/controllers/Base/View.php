@@ -34,6 +34,33 @@ abstract class ViewController extends AbstractController
                 ]
             );
         }
+
+        // 列表模板渲染
+        $this->model = (str_replace('_', '\\', $this->_request->controller).'Model')::getInstance();
+        if (isset($this->model)) {
+            $cols = [];
+            foreach (array_keys(APP_TABLE[$this->model->table]) as $field) {
+                $data = [];
+                $data['field'] = $field;
+                $data['sort'] = true;
+                $data['hide'] = false;
+                $data['title'] = l($this->_request->controller.'.'.$field);
+                if ($field === 'status') {
+                    $data['templet'] = '#status';
+                }
+                if (in_array($field, ['id', 'date_upd'], true)) {
+                    $data['fixed'] = 'left';
+                }
+                if (!in_array($field, ['id', 'status', 'date_add', 'date_upd'], true)) {
+                    $data['edit'] = 'text';
+                }
+                if (in_array($field, ['date_add', 'date_upd'], true)) {
+                    $data['templet'] = '<div>{{ layui.util.toDateString(d.'.$field.' * 1000) }}</div>';
+                }
+                $cols[] = $data;
+            }
+            $this->_view->assign('cols', $cols);
+        }
     }
 
     protected function postAction()
