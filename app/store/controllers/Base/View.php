@@ -19,7 +19,7 @@ abstract class ViewController extends AbstractController
                 'description' => l('app.description'),
 
                 'module' => $this->_request->module,
-                'controller' => strtolower($this->_request->controller),
+                'controller' => $this->_request->controller,
                 'action' => $this->_request->action,
                 'uri' => $this->_request->getRequestUri(),
             ]

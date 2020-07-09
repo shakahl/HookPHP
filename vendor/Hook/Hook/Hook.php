@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hook\Hook;
 
 use \Yaconf;
-use Hook\Db\{PdoConnect};
+use Hook\Db\{OrmConnect};
 use Hook\Cache\Cache;
 
 class Hook
@@ -13,7 +13,7 @@ class Hook
     {
         $data = &Cache::static(__METHOD__);
         if ($data === null) {
-            $data = PdoConnect::getInstance()->fetchAll(Yaconf::get('dicPdo.HOOK.MODULE.GET_ALL'), [], \PDO::FETCH_COLUMN | \PDO::FETCH_GROUP);
+            $data = OrmConnect::getInstance()->queryAll(Yaconf::get('dicPdo.HOOK.MODULE.GET_ALL'), [], \PDO::FETCH_COLUMN | \PDO::FETCH_GROUP);
         }
         return $data;
     }

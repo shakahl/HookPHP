@@ -21,7 +21,7 @@ abstract class ViewController extends AbstractController
                 'languages' => $this->languages,
 
                 'module' => $this->_request->module,
-                'controller' => strtolower($this->_request->controller),
+                'controller' => $this->_request->controller,
                 'action' => $this->_request->action,
                 'uri' => $this->_request->getRequestUri(),
             ]
@@ -36,30 +36,23 @@ abstract class ViewController extends AbstractController
         }
 
         // 列表模板渲染
-        $this->model = (str_replace('_', '\\', $this->_request->controller).'Model')::getInstance();
-        if (isset($this->model)) {
-            $cols = [];
-            foreach (array_keys(APP_TABLE[$this->model->table]) as $field) {
-                $data = [];
-                $data['field'] = $field;
-                $data['sort'] = true;
-                $data['hide'] = false;
-                $data['title'] = l($this->_request->controller.'.'.$field);
-                if ($field === 'status') {
-                    $data['templet'] = '#status';
+        if (isset($this->cols)) {
+            foreach ($this->cols as &$cols) {
+                $cols['sort'] = true;
+                $cols['hide'] = false;
+                $cols['title'] = l($this->_request->controller.'.'.$cols['field']);
+                if ($cols['field'] === 'status') {
+                    $cols['templet'] = '#status';
                 }
-                if (in_array($field, ['id', 'date_upd'], true)) {
-                    $data['fixed'] = 'left';
+                if (!in_array($cols['field'], ['id', 'status', 'date_add', 'date_upd'], true)) {
+                    $cols['edit'] = 'text';
                 }
-                if (!in_array($field, ['id', 'status', 'date_add', 'date_upd'], true)) {
-                    $data['edit'] = 'text';
+                if (in_array($cols['field'], ['date_add', 'date_upd'], true)) {
+                    $cols['unresize'] = true;
+                    $cols['templet'] = '<div>{{ layui.util.toDateString(d.'.$cols['field'].' * 1000) }}</div>';
                 }
-                if (in_array($field, ['date_add', 'date_upd'], true)) {
-                    $data['templet'] = '<div>{{ layui.util.toDateString(d.'.$field.' * 1000) }}</div>';
-                }
-                $cols[] = $data;
             }
-            $this->_view->assign('cols', $cols);
+            $this->_view->assign('cols', $this->cols);
         }
     }
 
@@ -75,6 +68,7 @@ abstract class ViewController extends AbstractController
 
     protected function getAction()
     {
-
+        $this->_view->display('list.phtml');
+        return false;
     }
 }

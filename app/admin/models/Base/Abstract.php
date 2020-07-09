@@ -11,6 +11,8 @@ use Hook\Tools\Tools;
 
 abstract class AbstractModel extends Cache
 {
+    public object $orm;
+
     public string $table;
     public string $foreign;
 
@@ -32,6 +34,8 @@ abstract class AbstractModel extends Cache
 
     public function __construct($id = null)
     {
+        $this->orm = OrmConnect::getInstance();
+
         $this->id = (int) $id;
         $this->table = Tools::formatTableName('%p'.($this->table ?? '%s_'.strtolower(str_replace(['\\', 'Model'], ['_', ''], static::class))));
         $this->foreign = $this->foreign ?? substr(strrchr($this->table, '_'), 1).'_id';

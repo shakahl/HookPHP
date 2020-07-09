@@ -66,14 +66,14 @@
                     </script>
                     <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="batchdel">删除</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="batchdel"><?php echo l($this->controller.'.delete');?></button>
+                            <button class="layui-btn layui-btn-sm" lay-event="add"><?php echo l($this->controller.'.post');?></button>
                         </div>
                     </script>
                     <script type="text/html" id="operate">
-                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><?php echo l($this->controller.'.get');?></a>
+                        <a class="layui-btn layui-btn-xs" lay-event="edit"><?php echo l($this->controller.'.put');?></a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><?php echo l($this->controller.'.delete');?></a>
                     </script>
                 </div>
             </div>
@@ -99,12 +99,11 @@
             ,height: 'full-100'
             ,cellMinWidth: 80
             ,cols: [[
-                {type:'checkbox', fixed: 'left'},
-                <?php
+                {type:'checkbox',fixed:'left'},<?php
                     foreach ($this->cols as $cols) {
                         echo json_encode($cols, JSON_UNESCAPED_UNICODE).',';
                     }
-                ?>{fixed:'right', toolbar: '#operate', unresize: true}
+                ?>{fixed:'right',toolbar:'#operate',unresize:true}
             ]]
             ,parseData: function(res){
                 return {
