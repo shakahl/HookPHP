@@ -4,16 +4,12 @@ MAINTAINER <letwang> 498936940@qq.com
 
 RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
     deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
-
     deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
     deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
-
     deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
     deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
-
     deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
     deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
-
     deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
     deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse' > /etc/apt/sources.list \
     && echo '151.101.76.133 raw.github.com
@@ -25,22 +21,29 @@ RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe m
 151.101.72.249 global-ssl.fastly.Net
 140.82.114.4 github.com
 52.74.223.119 github.com' >> /etc/hosts \
+    && echo 'nameserver 223.5.5.5
+nameserver 223.6.6.6' > /etc/resolv.conf \
     && apt-get -y update \
-    && apt-get -y upgrade \
     && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get install -y software-properties-common vim zsh git wget curl unzip htop gcc make cmake autoconf gnupg libgraphviz-dev \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository -y ppa:apt-fast/stable \
     && add-apt-repository -y ppa:ondrej/php \
-    && add-apt-repository -y ppa:ondrej/nginx \
-    && wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb \
-    && dpkg -i erlang-solutions_2.0_all.deb \
-    && wget https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc \
-    && apt-key add erlang_solutions.asc \
+    && apt-get -y install apt-fast \
+    && apt-fast install -y vim zsh git wget curl unzip htop gcc make cmake autoconf gnupg gnupg2 ca-certificates apt-transport-https libgraphviz-dev \
+    && echo "deb http://nginx.org/packages/ubuntu focal nginx" | tee /etc/apt/sources.list.d/nginx.list \
+    && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
+    && curl -fsSL https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc | apt-key add - \
+    && echo 'deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang
+deb https://dl.bintray.com/rabbitmq/debian bionic main' >> /etc/apt/sources.list \
     && wget https://dev.mysql.com/get/mysql-apt-config_0.8.15-1_all.deb \
     && dpkg -i mysql-apt-config_0.8.15-1_all.deb \
-    && apt-get -y update \
-    && apt-get install -y erlang nginx php7.4-common php7.4-cli php7.4-bcmath php7.4-dev php7.4-xml php7.4-opcache php7.4-mbstring php7.4-mysql php7.4-fpm php7.4-gd php7.4-zip php7.4-curl php7.4-intl php7.4-json \
-    && curl -sS https://getcomposer.org/installer | php \
+    && apt-fast -y update
+RUN apt-fast install -y nginx php7.4-common php7.4-cli php7.4-bcmath php7.4-dev php7.4-xml php7.4-opcache php7.4-mbstring php7.4-mysql php7.4-fpm php7.4-gd php7.4-zip php7.4-curl php7.4-intl php7.4-json \
+    && php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer \
+    && composer config -g repo.packagist composer https://packagist.phpcomposer.com \
     && pecl install msgpack \
     && pecl install igbinary \
     && pecl install yaf \
@@ -61,20 +64,21 @@ RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe m
     && cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. \
     && cmake --build . --target install \
     && printf "\n" | pecl install amqp \
-    && wget https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.8.5/rabbitmq-server_3.8.5-1_all.deb \
-    && dpkg -i rabbitmq-server_3.8.5-1_all.deb \
-    && rabbitmq-server start \
+    && apt-fast install -y --fix-missing rabbitmq-server \
+    && rabbitmq-server \& \
     && rabbitmqctl add_user admin 123456 \
     && rabbitmqctl set_user_tags admin administrator \
     && rabbitmqctl set_permissions -p / admin '.*' '.*' '.*' \
     && rabbitmqctl delete_user guest \
     && rabbitmq-plugins enable rabbitmq_management rabbitmq_shovel rabbitmq_shovel_management \
-    && apt install mysql-server \
     && wget http://download.redis.io/releases/redis-6.0.5.tar.gz \
     && tar xzf redis-6.0.5.tar.gz \
     && cd redis-6.0.5 \
     && make \
     && make install \
+    && redis-server \& \
+    && apt-fast install mysql-server \
+    && mysqld --skip-grant-tables --skip-networking --user=root \& \
     && printf "yes\n" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
     && wget -P ~/bin/ http://sphinxsearch.com/files/sphinx-3.3.1-b72d67b-linux-amd64.tar.gz
 
